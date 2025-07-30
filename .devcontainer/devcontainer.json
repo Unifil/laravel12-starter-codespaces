@@ -1,0 +1,13 @@
+{
+  "name": "Laravel 12 Codespace",
+  "dockerComposeFile": ["docker-compose.yml"],
+  "service": "app",
+  "workspaceFolder": "/workspace",
+  "shutdownAction": "stopCompose",
+  "extensions": [
+    "bmewburn.vscode-intelephense-client",
+    "ms-azuretools.vscode-docker"
+  ],
+  "postCreateCommand": "composer install && cp .env.example .env && php artisan key:generate",
+  "forwardPorts": [8000]
+}
