@@ -1,17 +1,18 @@
 {
-  "name": "Laravel 12 Codespace",
+  "name": "Laravel 12 + SQLite",
   "build": {
     "dockerfile": "Dockerfile",
     "context": "."
   },
-  "dockerComposeFile": ["docker-compose.yml"],
-  "service": "app",
   "workspaceFolder": "/workspace",
-  "shutdownAction": "stopCompose",
-  "postCreateCommand": "composer install && cp .env.example .env && php artisan key:generate",
+  "shutdownAction": "stopContainer",
+  "postCreateCommand": "php artisan config:clear && php artisan migrate --force",
   "forwardPorts": [8000],
   "extensions": [
     "bmewburn.vscode-intelephense-client",
     "ms-azuretools.vscode-docker"
-  ]
+  ],
+  "features": {
+    "ghcr.io/rails/devcontainer/features/sqlite3:latest": {} :contentReference[oaicite:11]{index=11}
+  }
 }
