@@ -13,6 +13,6 @@
     "ms-azuretools.vscode-docker"
   ],
   "features": {
-    "ghcr.io/rails/devcontainer/features/sqlite3:latest": {} :contentReference[oaicite:11]{index=11}
+    "ghcr.io/rails/devcontainer/features/sqlite3:latest": {} 
   }
 }
