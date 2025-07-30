@@ -1,19 +1,23 @@
-# Use a base PHP 8.2 image com ferramentas de devcontainer
-FROM mcr.microsoft.com/devcontainers/php:8.2
+# 1. Base com PHP 8.2 e ferramentas DevContainers
+FROM mcr.microsoft.com/devcontainers/php:8.2 :contentReference[oaicite:0]{index=0} :contentReference[oaicite:1]{index=1}
 
-# Configure diretório de trabalho
+# 2. Instala dependências do sistema para SQLite e compila a extensão
+RUN apt-get update \
+    && apt-get install -y sqlite3 libsqlite3-dev \
+    && docker-php-ext-install pdo_sqlite :contentReference[oaicite:2]{index=2} :contentReference[oaicite:3]{index=3}
+
+# 3. Define diretório de trabalho
 WORKDIR /workspace
 
-# Copia apenas o arquivo de dependências para aproveitar cache
+# 4. Copia apenas composer.json para cache de dependências
 COPY ../composer.json ../composer.lock ./
 
-# Instala Composer e dependências de PHP
-RUN composer install --no-interaction --no-progress --prefer-dist
+# 5. Instala dependências PHP
+RUN composer install --no-interaction --no-ansi --no-progress --no-scripts \
+    && composer clear-cache :contentReference[oaicite:4]{index=4} :contentReference[oaicite:5]{index=5}
 
-# Copia o restante do código
+# 6. Copia o restante do código e prepara o DB
 COPY .. .
-
-# Gera a chave de aplicativo e migra o DB
-RUN cp .env.example .env \
+RUN touch database/database.sqlite \
     && php artisan key:generate \
-    && php artisan migrate --force
+    && php artisan migrate --force :contentReference[oaicite:6]{index=6} :contentReference[oaicite:7]{index=7}
