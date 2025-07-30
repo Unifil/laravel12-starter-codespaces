@@ -1,4 +1,5 @@
 version: '3.8'
+
 services:
   db:
     image: bitnami/mariadb:latest
@@ -8,19 +9,23 @@ services:
       MARIADB_DATABASE: bitnami_myapp
     volumes:
       - mariadb_data:/bitnami/mariadb
+
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     volumes:
       - ..:/workspace:cached
     command: >
       bash -lc "composer install &&
                cp .env.example .env &&
                php artisan key:generate &&
-               php artisan migrate &&
+               php artisan migrate --force &&
                php artisan serve --host=0.0.0.0 --port=8000"
     ports:
       - '8000:8000'
     depends_on:
       - db
+
 volumes:
   mariadb_data:
